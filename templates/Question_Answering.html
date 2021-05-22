@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="../static/scriptqa.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="../static/styles.css">
+        <title>Question Answering</title>
+    </head>
+
+    <body>
+
+
+    <div id="pagee-wrapper">
+    <form action="{{ url_for('answering') }}" method="post">
+
+        <h1>Question Answering</h1>
+
+            <div id="forme-wrapper">
+                <h3>Question</h3>
+                <div>
+                    <textarea rows = "3" cols = "60" name = "prasna" placeholder="Enter your question here..." id="question-input">{{question}} </textarea>
+                </div>
+
+                <h3>Context</h3>
+                <div>
+                    <textarea rows = "5" cols = "60" name = "nepadyam" placeholder=" " id="text-input"> {{context}} </textarea>
+                </div>
+
+
+                <div>
+                    <button  id="answer_button" onclick="highlight()">answer</button>
+                </div>
+
+
+            </div>
+    </form>
+
+    </div>
+
+
+
+
+
+        <div id="page-wrapper">
+
+            <div id="form-wrapper">
+                <div>
+                    <textarea rows = "3" cols = "60" name = "description" placeholder="" id="keyword-input">{{answer}}</textarea>
+                </div>
+                <div>
+                    <button  id="submit-button" onclick="highlight()">Highlight</button>
+                </div>
+            </div>
+
+
+        <h2>Result</h2>
+        <div id="result"></div>
+
+    </div>
+
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../static/styles.css">
+        <title>Web Search</title>
+    </head>
+
+    <body>
+    <div id="page-wrapper">
+        <h1>QUERY RESOLUTION</h1>
+            <form action = "/successws" method = "post" enctype="multipart/form-data">
+            <div id="form-wrapper">
+                <h3>Query</h3>
+                <div>
+                    <textarea rows = "3" cols = "60" name = "description" placeholder=" Enter your QUERY..." id="keyword-input"></textarea>
+                </div>
+                <div>
+                    <button  id="submit-button" onclick="highlight()">Answer Me !!! </button>
+                </div>
+            </div>
+            </form>
+
+        <h2>Result</h2>
+        <div id="result"></div>
+<table class="table table-striped" >
+    <tbody>
+{% for key, value in data.items() %}
+  <tr>
+    <th scope="row">{{ key }}</th>
+    <td>{{ value }}</td>
+  </tr>
+  {% endfor %}
+</tbody>
+</table>
+    </div>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+
+#page-wrapper{
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 5%;
+
+}
+
+textarea{
+    width: 100%;
+}
+
+h3{
+    margin-top: 2%;
+}
+
+
+#submit-button{
+    width: 20%;
+    margin-left: 40%;
+}
