@@ -20,6 +20,9 @@ def success():
         f = request.files['file']
         f.save(f.filename)
         local_txt = ht.text_file(f.filename)
+        with open("static/summary.html", "w", encoding="utf-8") as f:
+            f.write(ets.Word_weight(local_txt))
+
         global txt
         txt = local_txt
         txtv.run(local_txt)
@@ -56,7 +59,7 @@ def insertlink():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    with open("C://Users//bhaskar//Desktop//FYP//new//static//summary.html", "w", encoding="utf-8") as f:
+    with open("static/summary.html", "w", encoding="utf-8") as f:
         f.write(ets.Word_weight(request.form['text']))
     global txt
     txt = request.form['text']
@@ -64,10 +67,10 @@ def submit():
     return render_template("visualizations.html")
 
 
-@app.route('/submitlink', methods=['POST'])
+@app.route('/submitlink', methods=['POST','GET'])
 def submitlink():
     got_the_text = ht.get_text_from_link(request.form['text'])
-    with open("C://Users//bhaskar//Desktop//FYP//new//static//summary.html", "w", encoding="utf-8") as f:
+    with open("static/summary.html", "w", encoding="utf-8") as f:
         f.write(ets.Word_weight(got_the_text))
     global txt
     txt = request.form['text']
@@ -81,12 +84,15 @@ def file_upload_formats():
     return render_template("file_upload_formats.html")
 
 
-@app.route('/successats', methods=['POST'])
+@app.route('/successats', methods=['POST','GET'])
 def successats():
     if request.method == 'POST':
         f = request.files['file']
         f.save(f.filename)
         local_txt = ht.text_file(f.filename)
+        with open("static/summary.html", "w", encoding="utf-8") as f:
+            f.write(ets.Word_weight(local_txt))
+
         global txt
         txt = local_txt
         txtv.run(local_txt)
@@ -104,9 +110,9 @@ def insertlinkats():
     return render_template('insertlinkats.html')
 
 
-@app.route('/submitats', methods=['POST'])
+@app.route('/submitats', methods=['POST', 'GET'])
 def submitats():
-    with open("C://Users//bhaskar//Desktop//FYP//new//static//summary.html", "w", encoding="utf-8") as f:
+    with open("static/summary.html", "w", encoding="utf-8") as f:
         f.write(ats.at_sum(request.form['text']))
     global txt
     txt = request.form['text']
@@ -114,10 +120,10 @@ def submitats():
     return render_template("visualizations.html")
 
 
-@app.route('/submitlinkats', methods=['POST'])
+@app.route('/submitlinkats', methods=['POST','GET'])
 def submitlinkats():
     got_the_text = ht.get_text_from_link(request.form['text'])
-    with open("C://Users//bhaskar//Desktop//FYP//new//static//summary.html", "w", encoding="utf-8") as f:
+    with open("static/summary.html", "w", encoding="utf-8") as f:
         f.write(ats.at_sum(got_the_text))
     global txt
     txt = request.form['text']

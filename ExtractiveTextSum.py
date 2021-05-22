@@ -57,11 +57,11 @@ def Word_weight(article_text):
 
         order_details = sorted(summary_dict.keys())
         i = 1
-        string = ''
+        string = '<H1>SUMMARY</H1><BR><BR>'
         print(order_details)
         for j in order_details:
             print(i, ' : ', summary_dict[j])
-            string += summary_dict[j]
+            string += "<p>" + str(i) + " : " + summary_dict[j] + "</p>"
             i += 1
 
     except ValueError:
