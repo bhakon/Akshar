@@ -70,9 +70,11 @@ def wikiresult(query):
 def mainu(query):
     flag = query[-1]
     query = query[:len(query) - 1]
-    links = google_results(query, 10)
+    links = google_results(query, 25)
+    print(links)
     for link in links:
         index = link.find("en.wikipedia.org/wiki/")
+        print(link)
         if flag != '$' and index != -1:
             wiki = link[index + 22:]
             return infobox(wiki)
@@ -89,3 +91,4 @@ def mainu(query):
                 except:
                     pass
             return {query: ets.Word_weight(total_text)}
+

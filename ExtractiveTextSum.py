@@ -2,25 +2,37 @@ import heapq
 import re
 import nltk
 from nltk.tokenize import sent_tokenize
+import HelperTools as ht
 
 nltk.download('punkt')
 nltk.download('stopwords')
+f = open('SmartStoplist.txt', 'r')
+
+try:
+    smartstoplist = f.read()
+    # print(text)
+except UnicodeDecodeError:
+    pass
+
 stopwords = nltk.corpus.stopwords.words('english')
+stopwords.extend(smartstoplist.split('\n'))
+stopwords = set(stopwords)
 
 
-def Word_weight(article_text):
+def Word_weight(article_text, p, lang):
     count = 1
     try:
         article_text = re.sub(r'\[[0-9]*\]', ' ', article_text)
         article_text = re.sub(r'\s+', ' ', article_text)
         formatted_article_text = re.sub('[^a-zA-Z]', ' ', article_text)
         formatted_article_text = re.sub(r'\s+', ' ', formatted_article_text)
-        print(article_text)
+        # print(article_text)
         sentence_list = (sent_tokenize(article_text))
-        print(len(sentence_list))
+        # print(len(sentence_list))
         sentence_list = set(sentence_list)
         sentence_list = list(sentence_list)
-        print(len(sentence_list))
+        noofsentences = len(sentence_list)
+        howmuch = p * noofsentences // 100
 
         new_list = []
         for sentence in sentence_list:
@@ -48,7 +60,7 @@ def Word_weight(article_text):
                     else:
                         sentence_scores[sent] += word_frequencies[word]
 
-        summary_sentences = heapq.nlargest(5, sentence_scores, key=sentence_scores.get)
+        summary_sentences = heapq.nlargest(howmuch, sentence_scores, key=sentence_scores.get)
 
         summary_dict = {}
         for sent in summary_sentences:
@@ -57,13 +69,31 @@ def Word_weight(article_text):
 
         order_details = sorted(summary_dict.keys())
         i = 1
-        string = '<H1>SUMMARY</H1><BR><BR>'
+        string = ''
         print(order_details)
-        for j in order_details:
-            print(i, ' : ', summary_dict[j])
-            string += "<p>" + str(i) + " : " + summary_dict[j] + "</p>"
-            i += 1
+        lst=[]
+        if lang == 'en':
+
+            '''for j in order_details:
+                print(i, ' : ', summary_dict[j])
+                string += str(i) + " : " + summary_dict[j] + "&#13;&#10;"
+                i += 1'''
+            for j in order_details:
+                print(i, ' : ', summary_dict[j])
+                lst.append( str(i) + " : " + summary_dict[j] )
+                i += 1
+
+        else:
+
+            '''for j in order_details:
+                print(i, ' : ', summary_dict[j])
+                string += str(i) + " : " + ht.langtranslate(summary_dict[j], lang) + "&#13;&#10;"
+                i += 1'''
+            for j in order_details:
+                print(i, ' : ', summary_dict[j])
+                lst.append( str(i) + " : " + ht.langtranslate(summary_dict[j], lang))
+                i += 1
 
     except ValueError:
         pass
-    return string
+    return lst

@@ -4,9 +4,14 @@ import HelperTools as ht
 import ExtractiveTextSum as ets
 import ATS as ats
 import webbasedsearch as wbs
+
 app = Flask(__name__)
 
 txt = ""
+howmuchkeyphrases = 1
+howmuchkeywords = 2
+howmuch = 1
+lang = 'en'
 
 
 @app.route('/file_upload_form', methods=['GET', 'POST'])
@@ -20,10 +25,17 @@ def success():
         f = request.files['file']
         f.save(f.filename)
         local_txt = ht.text_file(f.filename)
-        with open("static/summary.html", "w", encoding="utf-8") as f:
-            f.write(ets.Word_weight(local_txt))
 
+        global howmuch
+        global lang
+        global howmuchkeyphrases
+        global howmuchkeyphrases
         global txt
+
+        howmuch = request.form['howmuch']
+        lang = request.form['languages']
+        howmuchkeyphrases = request.form['howmuchkeyphrases']
+        howmuchkeywords = request.form['howmuchkeywords']
         txt = local_txt
         txtv.run(local_txt)
 
@@ -42,14 +54,20 @@ def inserttext():
 
 @app.route('/keywords', methods=['GET', 'POST'])
 def keywords():
-    data = ht.get_keywords(txt)
+    data = ht.get_keywords(txt, howmuchkeywords)
     return render_template('keywords.html', data=data, context=txt)
 
 
 @app.route('/keyphrases', methods=['GET', 'POST'])
 def keyphrases():
-    data = ht.get_keyphrases(txt)
+    data = ht.get_keyphrases(txt, int(howmuchkeyphrases))
     return render_template('keyphrases.html', data=data, context=txt)
+
+
+@app.route('/summary', methods=['GET', 'POST'])
+def summary():
+    data = ets.Word_weight(txt, int(howmuch), lang)
+    return render_template('summary.html', data=data)
 
 
 @app.route('/insertlink', methods=['GET', 'POST'])
@@ -59,19 +77,34 @@ def insertlink():
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    with open("static/summary.html", "w", encoding="utf-8") as f:
-        f.write(ets.Word_weight(request.form['text']))
+    global  howmuch
+    global lang
+    howmuch = request.form['howmuch']
+    lang = request.form['languages']
+    global howmuchkeyphrases
+    global howmuchkeyphrases
+    howmuchkeyphrases = request.form['howmuchkeyphrases']
+    howmuchkeywords = request.form['howmuchkeywords']
+
     global txt
     txt = request.form['text']
+
     txtv.run(request.form['text'])
     return render_template("visualizations.html")
 
 
-@app.route('/submitlink', methods=['POST','GET'])
+@app.route('/submitlink', methods=['POST', 'GET'])
 def submitlink():
+    global howmuch
+    global lang
     got_the_text = ht.get_text_from_link(request.form['text'])
-    with open("static/summary.html", "w", encoding="utf-8") as f:
-        f.write(ets.Word_weight(got_the_text))
+    howmuch = request.form['howmuch']
+    lang = request.form['languages']
+    global howmuchkeyphrases
+    global howmuchkeyphrases
+    howmuchkeyphrases = request.form['howmuchkeyphrases']
+    howmuchkeywords = request.form['howmuchkeywords']
+
     global txt
     txt = request.form['text']
     txtv.run(got_the_text)
@@ -84,14 +117,21 @@ def file_upload_formats():
     return render_template("file_upload_formats.html")
 
 
-@app.route('/successats', methods=['POST','GET'])
+@app.route('/successats', methods=['POST', 'GET'])
 def successats():
     if request.method == 'POST':
+        global howmuch
+        global lang
+        howmuch = request.form['howmuch']
+        lang = request.form['languages']
+
         f = request.files['file']
         f.save(f.filename)
         local_txt = ht.text_file(f.filename)
-        with open("static/summary.html", "w", encoding="utf-8") as f:
-            f.write(ets.Word_weight(local_txt))
+        global howmuchkeyphrases
+        global howmuchkeyphrases
+        howmuchkeyphrases = request.form['howmuchkeyphrases']
+        howmuchkeywords = request.form['howmuchkeywords']
 
         global txt
         txt = local_txt
@@ -112,19 +152,34 @@ def insertlinkats():
 
 @app.route('/submitats', methods=['POST', 'GET'])
 def submitats():
-    with open("static/summary.html", "w", encoding="utf-8") as f:
-        f.write(ats.at_sum(request.form['text']))
+    global howmuch
+    global lang
+    howmuch = request.form['howmuch']
+    lang = request.form['languages']
+
+    global howmuchkeyphrases
+    global howmuchkeyphrases
+    howmuchkeyphrases = request.form['howmuchkeyphrases']
+    howmuchkeywords = request.form['howmuchkeywords']
+
     global txt
     txt = request.form['text']
     txtv.run(request.form['text'])
     return render_template("visualizations.html")
 
 
-@app.route('/submitlinkats', methods=['POST','GET'])
+@app.route('/submitlinkats', methods=['POST', 'GET'])
 def submitlinkats():
+    global howmuchkeyphrases
+    global howmuchkeyphrases
+    global howmuch
+    global lang
+    howmuchkeyphrases = request.form['howmuchkeyphrases']
+    howmuchkeywords = request.form['howmuchkeywords']
+    howmuch = request.form['howmuch']
+    lang = request.form['languages']
+
     got_the_text = ht.get_text_from_link(request.form['text'])
-    with open("static/summary.html", "w", encoding="utf-8") as f:
-        f.write(ats.at_sum(got_the_text))
     global txt
     txt = request.form['text']
     txtv.run(got_the_text)
@@ -184,15 +239,13 @@ def submitlinkds():
 @app.route('/successws', methods=['POST'])
 def successws():
     txt = request.form['description']
-    output=wbs.mainu(txt)
+    output = wbs.mainu(txt)
     return render_template("websearch.html", data=output)
 
 
-@app.route('/websearch', methods=['GET','POST'])
+@app.route('/websearch', methods=['GET', 'POST'])
 def websearch():
-
     return render_template("websearch.html")
-
 
 
 if __name__ == '__main__':

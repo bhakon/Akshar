@@ -3,16 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <title>AKSHAR</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 <body>
-<!--
- partial:index.partial.html 
-<div class="message">
-  &check; Made by <a href="https://codepen.io/pieter-biesemans/" target="_blank" title="&check; check out my other work">Pieter Biesemans</a> with &#9749;, &#128420; &amp; &#8986;</i>
-</div>
--->
+
 
 <div class="wrapper">
     <ul>
@@ -22,10 +17,12 @@
             <li>
               <label for="item1"> 	Extractive Text Summarization	    </label><input id="item1" type="checkbox" checked>
               <ul>
-                <span class="more">&hellip;</span>
-               <li><a href={{ url_for('inserttext') }}> <label for="item1.1">Insert Text </label><input id="item1.1" type="checkbox"></a></li>
-               <li><a href={{ url_for('file_upload_form') }}> <label for="item1.2">Upload file </label><input id="item1.2" type="checkbox"></a></li>
-               <li><a href={{ url_for('insertlink') }}><label for="item1.3">Web Links</label><input id="item1.3" type="checkbox"></a></li>
+
+                  <span class="more">&hellip;</span>
+
+                  <li><a href={{ url_for('inserttext') }}> <label for="item1.1">Insert Text </label><input id="item1.1" type="checkbox"></a></li>
+                  <li><a href={{ url_for('file_upload_form') }}> <label for="item1.2">Upload file </label><input id="item1.2" type="checkbox"></a></li>
+                  <li><a href={{ url_for('insertlink') }}><label for="item1.3">Web Links</label><input id="item1.3" type="checkbox"></a></li>
 
               </ul>
             </li>
@@ -64,31 +61,118 @@
                <li><a href={{ url_for('insertlinkds') }} ><label for="item2.1.3">Web Links</label><input id="item2.1.3" type="checkbox"></a></li>
                   </ul>
                 </li>
-                <li><label for="item2.2">Web Search</label><input id="item2.2" type="checkbox"></li>
+                <li><a href = {{ url_for('websearch')}} > <label for="item2.2">Web Search</label><input id="item2.2" type="checkbox"></a></li>
               </ul>
              </li>
             <li>
-              <label for="item4">4</label><input id="item4" type="checkbox" checked>
+              <label for="item4">About Us </label><input id="item4" type="checkbox" checked>
               <ul>
                 <span class="more">&hellip;</span>
                 <li>
-                  <label for="item4.1">4.1</label><input id="item4.1" type="checkbox">
+                  <label for="item4.1"> Our Team </label><input id="item4.1" type="checkbox" checked>
                   <ul>
                     <span class="more">&hellip;</span>
-                    <li><label for="item4.1.1">4.1.1</label><input id="item4.1.1" type="checkbox"></li>
-                    <li><label for="item4.1.2">4.1.2</label><input id="item4.1.2" type="checkbox"></li>
-                    <li><label for="item4.1.3">4.1.3</label><input id="item4.1.3" type="checkbox"></li>
+                    <li>
+                        <label for="item4.1.1">Bhaskar Konagandla</label><input id="item4.1.1" type="checkbox" checked >
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.1.1">Linked In </label><input id="item4.1.1.1" type="checkbox"></li>
+                        </ul>
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.1.2">Git Hub</label><input id="item4.1.1.2" type="checkbox"></li>
+                        </ul>
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.1.3"> Instagram </label><input id="item4.1.1.3" type="checkbox"></li>
+                        </ul>
+
+
+                    </li>
+                    <li>
+                        <label for="item4.1.2">Karthik Sharma</label><input id="item4.1.2" type="checkbox" checked >
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.2.1">Linked In </label><input id="item4.1.2.1" type="checkbox"></li>
+                        </ul>
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.2.2">Git Hub</label><input id="item4.1.2.2" type="checkbox"></li>
+                        </ul>
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.3.3"> Instagram </label><input id="item4.1.2.3" type="checkbox"></li>
+                        </ul>
+
+
+                    </li>
+                    <li><label for="item4.1.3">pottumurthy Venkata Hemanth</label><input id="item4.1.3" type="checkbox" checked >
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.3.1">Linked In </label><input id="item4.1.3.1" type="checkbox"></li>
+                        </ul>
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.3.2">Git Hub</label><input id="item4.1.3.2" type="checkbox"></li>
+                        </ul>
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.3.3"> Instagram </label><input id="item4.1.3.3" type="checkbox"></li>
+                        </ul>
+
+
+
+                    </li>
+
+
+
+
+
                   </ul>
                 </li>
-                <li><label for="item4.2">4.2</label><input id="item4.2" type="checkbox"></li>
                 <li>
-                  <label for="item4.3">4.3</label><input id="item4.3" type="checkbox">
-                  <ul>
+                    <label for="item4.2"> Our Guide  </label><input id="item4.2" type="checkbox" checked>
+                    <ul>
                     <span class="more">&hellip;</span>
-                    <li><label for="item4.3.1">4.3.1</label><input id="item4.3.1" type="checkbox"></li>
+                    <li><label for="item4.2.1">Dr. Rekha Chaturvedi</label><input id="item4.2.1" type="checkbox" checked >
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.3.1">Linked In </label><input id="item4.1.3.1" type="checkbox"></li>
+                        </ul>
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.3.2">Git Hub</label><input id="item4.1.3.2" type="checkbox"></li>
+                        </ul>
+
+                        <ul>
+                    <span class="more">&hellip;</span>
+                    <li><label for="item4.1.3.3"> Instagram </label><input id="item4.1.3.3" type="checkbox"></li>
+                        </ul>
+
+
+
+
+
+                    </li>
                   </ul>
+
                 </li>
-                <li><label for="item4.4">4.4</label><input id="item4.4" type="checkbox"></li>
+                <li>
+                  <label for="item4.3"> Project Link   </label><input id="item4.3" type="checkbox" checked>
+
+                </li>
+                <li><label for="item4.4"> Temp </label><input id="item4.4" type="checkbox"></li>
                </ul>
              </li>
         </ul>
