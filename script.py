@@ -239,13 +239,15 @@ def submitlinkds():
 @app.route('/successws', methods=['POST'])
 def successws():
     txt = request.form['description']
-    output = wbs.mainu(txt)
+    type = request.form['type']
+    output = wbs.mainu(txt , type )
+    print
     return render_template("websearch.html", data=output)
 
 
 @app.route('/websearch', methods=['GET', 'POST'])
 def websearch():
-    return render_template("websearch.html")
+    return render_template("websearch.html" , data ={})
 
 
 if __name__ == '__main__':

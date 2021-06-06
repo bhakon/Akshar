@@ -67,9 +67,7 @@ def wikiresult(query):
         print(i, " : ", dic[i])
 
 
-def mainu(query):
-    flag = query[-1]
-    query = query[:len(query) - 1]
+def mainu(query , flag):
     links = google_results(query, 25)
     print(links)
     for link in links:
@@ -90,5 +88,5 @@ def mainu(query):
                     total_text += ht.get_text_from_link(link)
                 except:
                     pass
-            return {query: ets.Word_weight(total_text)}
+            return {query: ets.Word_weight(total_text , 10 , 'en' )}
 
