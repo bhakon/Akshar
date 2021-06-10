@@ -1,7 +1,9 @@
 import heapq
 import re
+
 import nltk
 from nltk.tokenize import sent_tokenize
+
 import HelperTools as ht
 
 nltk.download('punkt')
@@ -26,17 +28,20 @@ text = """
 
 def Word_weight(article_text, p, lang):
     count = 1
+    source_language = ht.detect_lang(article_text[:100])
+    if source_language != 'en' :
+        article_text = ht.langtranslate(article_text , 'en')
+    #article_text=article_text.lower()
     try:
         article_text = re.sub(r'\[[0-9]*\]', ' ', article_text)
         article_text = re.sub(r'\s+', ' ', article_text)
         formatted_article_text = re.sub('[^a-zA-Z]', ' ', article_text)
         formatted_article_text = re.sub(r'\s+', ' ', formatted_article_text)
-        # print(article_text)
         sentence_list = (sent_tokenize(article_text))
+        sentence_list = list(dict.fromkeys(sentence_list))
         # print(len(sentence_list))
-        sentence_list = set(sentence_list)
-        sentence_list = list(sentence_list)
         noofsentences = len(sentence_list)
+
         howmuch = p * noofsentences // 100
 
         new_list = []
@@ -66,7 +71,6 @@ def Word_weight(article_text, p, lang):
                         sentence_scores[sent] += word_frequencies[word]
 
         summary_sentences = heapq.nlargest(howmuch, sentence_scores, key=sentence_scores.get)
-
         summary_dict = {}
         for sent in summary_sentences:
             index = sent.find(':')
@@ -76,7 +80,7 @@ def Word_weight(article_text, p, lang):
         i = 1
         string = ''
         print(order_details)
-        lst=[]
+        lst = []
         if lang == 'en':
 
             '''for j in order_details:
@@ -85,7 +89,7 @@ def Word_weight(article_text, p, lang):
                 i += 1'''
             for j in order_details:
                 print(i, ' : ', summary_dict[j])
-                lst.append( str(i) + " : " + summary_dict[j] )
+                lst.append(str(i) + " : " + summary_dict[j])
                 i += 1
 
         else:
@@ -96,10 +100,9 @@ def Word_weight(article_text, p, lang):
                 i += 1'''
             for j in order_details:
                 print(i, ' : ', summary_dict[j])
-                lst.append( str(i) + " : " + ht.langtranslate(summary_dict[j], lang))
+                lst.append(str(i) + " : " + ht.langtranslate(summary_dict[j], lang))
                 i += 1
 
     except ValueError:
         pass
     return lst
-

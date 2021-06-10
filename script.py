@@ -69,6 +69,11 @@ def summary():
     data = ets.Word_weight(txt, int(howmuch), lang)
     return render_template('summary.html', data=data)
 
+@app.route('/summaryats', methods=['GET', 'POST'])
+def summaryats():
+    data = ats.at_sum(txt)
+    return render_template('summaryats.html', data=data)
+
 
 @app.route('/insertlink', methods=['GET', 'POST'])
 def insertlink():
@@ -137,7 +142,7 @@ def successats():
         txt = local_txt
         txtv.run(local_txt)
 
-        return render_template("visualizations.html")
+        return render_template("visualizationsats.html")
 
 
 @app.route('/inserttextats', methods=['GET', 'POST'])
@@ -165,7 +170,7 @@ def submitats():
     global txt
     txt = request.form['text']
     txtv.run(request.form['text'])
-    return render_template("visualizations.html")
+    return render_template("visualizationsats.html")
 
 
 @app.route('/submitlinkats', methods=['POST', 'GET'])
@@ -183,7 +188,7 @@ def submitlinkats():
     global txt
     txt = request.form['text']
     txtv.run(got_the_text)
-    return render_template("visualizations.html")
+    return render_template("visualizationsats.html")
 
 
 # -----------------------------------------------------------------------------------------------------------#

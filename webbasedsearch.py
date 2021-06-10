@@ -8,7 +8,12 @@ import nltk
 from bs4 import BeautifulSoup
 import HelperTools as ht
 import ExtractiveTextSum as ets
+import re
 
+def cleanhtml(raw_html):
+  cleanr = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+  cleantext = re.sub(cleanr, '', raw_html)
+  return cleantext
 
 def get_google_box(query):
     headers = {
@@ -58,6 +63,21 @@ def google_results(keyword, n_results):
 def infobox(item):
     so = wptools.page(item).get_parse()
     infobox = so.data['infobox']
+    if 'image' in infobox.keys():
+        infobox.pop('image')
+    if 'alt' in infobox.keys():
+        infobox.pop('alt')
+    if 'caption' in infobox.keys():
+        infobox.pop('caption')
+    for i in infobox.keys():
+        infobox[i] = infobox[i].replace("{", "")
+        infobox[i] = infobox[i].replace("[", "")
+        infobox[i] = infobox[i].replace("}", "")
+        infobox[i] = infobox[i].replace("]", "")
+        infobox[i] = infobox[i].replace("|", " | ")
+        infobox[i] = infobox[i].replace("*", "\n*")
+        infobox[i] = cleanhtml(infobox[i])
+
     return infobox
 
 

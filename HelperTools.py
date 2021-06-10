@@ -1,20 +1,18 @@
-import re
-from googletrans import Translator
-import nltk
-from docx import Document
-from pdfminer.high_level import extract_text
-import bs4 as bs
-import urllib.request
-import wikipedia
-from gensim.summarization import keywords
-import RAKE
-from nltk import tokenize
-from operator import itemgetter
 import math
-import operator
+import re
+import urllib.request
+from operator import itemgetter
+import wikipediaapi
+import RAKE
+import bs4 as bs
 import nltk
+import wikipedia
+from docx import Document
+from gensim.summarization import keywords
+from googletrans import Translator
+from nltk import tokenize
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
+from pdfminer.high_level import extract_text
 
 f = open('SmartStoplist.txt', 'r')
 try:
@@ -34,11 +32,14 @@ def text_file(file):
     print(extension)
     if extension == 'txt':
 
-        f = open(file, 'r')
+        f = open(file, 'r' , encoding="utf-8")
+        print(f)
+        print(f.encoding)
         try:
             text = f.read()
-            # print(text)
+            print(text)
         except UnicodeDecodeError:
+            print("exception ++++++++++++++++++++++++++++++++++++++++++++++++++++")
             pass
 
     elif extension == 'docx':
@@ -62,13 +63,19 @@ def text_file(file):
 def get_text_from_link(urllink):
     if urllink.find('wikipedia.org') != -1:
         result = urllink.find('wikipedia.org/wiki/')
-        wiki = wikipedia.page(urllink[result + 19:])
+        print(urllink[result + 19:])
+        '''        wiki = wikipedia.page(urllink[result + 19:])
         text = wiki.content
-        text = text.replace('==', '')
+        '''
+        wiki_wiki = wikipediaapi.Wikipedia('en')
+        page_py = wiki_wiki.page(urllink[result + 19:])
+        text = (page_py.text)
+
+        '''text = text.replace('==', '')
         text = re.sub(r'\[[0-9]*\]', ' ', text)
         text = re.sub(r'\s+', ' ', text)
         text = re.sub('[^a-zA-Z]', ' ', text)
-        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r'\s+', ' ', text)'''
 
         # print(text)
         return text
@@ -101,10 +108,11 @@ def keywords_code(text):
 # https://medium.com/analytics-vidhya/keyword-extraction-techniques-using-python-edea5fc35678
 # https://www.section.io/engineering-education/keyword-extraction-in-python/
 # https://github.com/prachiprakash26/Keyword_Extractor_Python/blob/main/Keyword_Extraction_Python.ipynb
-import TextVisualizations as tv
-def get_keywords(doc , howmuch):
-    doc=doc.lower()
-    doc=re.sub('[^a-zA-Z" ".]+', '', doc)
+
+
+def get_keywords(doc, howmuch):
+    doc = doc.lower()
+    doc = re.sub('[^a-zA-Z" ".]+', '', doc)
     total_words = doc.split()
     total_word_length = len(total_words)
     # print(total_word_length, " twl")
@@ -154,21 +162,16 @@ def get_keywords(doc , howmuch):
         result = dict(sorted(dict_elem.items(), key=itemgetter(1), reverse=True)[:n])
         return result
 
-
     '''j = 1
     for i in (get_top_n(tf_idf_score,300 )).keys():
         print(j, ")", i)
         j += 1'''
 
-    total=len(tf_idf_score.keys())
-    howmuch= howmuch * total // 100
-    return get_top_n(tf_idf_score , howmuch)
+    total = len(tf_idf_score.keys())
+    howmuch = howmuch * total // 100
+    return get_top_n(tf_idf_score, howmuch)
 
-
-
-
-    #return get_top_n(tf_idf_score , 15 )
-
+    # return get_top_n(tf_idf_score , 15 )
 
 
 # get_keywords(text.lower())
@@ -178,27 +181,33 @@ def sort_tup(tup):
     tup.sort(key=lambda x: x[1])
     return tup
 
+
 # https://bdewilde.github.io/blog/2014/09/23/intro-to-automatic-keyphrase-extraction/
-def get_keyphrases(text , howmuch):
+def get_keyphrases(text, howmuch):
     stop_dir = "smartstoplist.txt"
     rakeobj = RAKE.Rake(stop_dir)
     keywords = sort_tup(rakeobj.run(text))
-    keywords=keywords[::-1]
-    total=len(keywords)
-    howmuch= howmuch * total // 100
-    lst=[]
+    keywords = keywords[::-1]
+    total = len(keywords)
+    howmuch = howmuch * total // 100
+    lst = []
     for i in range(howmuch):
-        lst.append(keywords[i][0])
+        the_word = keywords[i][0]
+        if len(the_word) > 2 :
+            lst.append(the_word)
     return lst
 
-def langtranslate(text , des):
 
+def langtranslate(text, des):
     translator = Translator()
     translation = translator.translate(text, dest=des)
 
     return (translation.text)
 
+
 def detect_lang(text):
-    translator=Translator()
+    translator = Translator()
     return (translator.detect(text)).lang
+
+
 
