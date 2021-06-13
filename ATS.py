@@ -90,8 +90,12 @@ def title_gen(context):
 
 def question_answering(question, context):
     client = nlpcloud.Client("roberta-base-squad2", "dadbdbaebb34b57763094752c9049a932a725028")
-
+    print("fine 1 -----------------")
+    print(context )
+    print("----------------------------")
+    print(question , "--------------------")
     result = client.question(context, question)
+    print("fine 2 ---------------")
     return result['answer']
 
 def at_sum(context):

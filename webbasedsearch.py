@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 import HelperTools as ht
 import ExtractiveTextSum as ets
 import re
+import ATS as ats
 
 def cleanhtml(raw_html):
   cleanr = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
@@ -25,7 +26,7 @@ def get_google_box(query):
     result = soup.find('div', class_='Z0LcW')
     # result = soup.find('div', class_='gL9Hy')
 
-    return (result.text)
+    return result.text
 
 
 def spelling_corrector(query):
@@ -88,7 +89,7 @@ def wikiresult(query):
 
 
 def mainu(query , flag):
-    links = google_results(query, 25)
+    links = google_results(query,1)
     print(links)
     for link in links:
         index = link.find("en.wikipedia.org/wiki/")
@@ -108,5 +109,12 @@ def mainu(query , flag):
                     total_text += ht.get_text_from_link(link)
                 except:
                     pass
-            return {query: ets.Word_weight(total_text , 10 , 'en' )}
+
+            if flag !='$' :
+                return {query: ets.Word_weight(total_text , 10 , 'en' )}
+
+            else :
+                print("here ----")
+                return {query: ats.question_answering(query , total_text[:3300])}
+
 
